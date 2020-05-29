@@ -23,7 +23,7 @@ from exceptions import DopeProjectExists
     help='The template defining your projects files and directories.'
 )
 def roll(name, template):
-    """Roll the project from a template.
+    """Dope - A CLI for hand rolling software projects.
 
     Args:
         name: Project name.

@@ -3,16 +3,16 @@
 
 class Directory:
     """An object describing a system directory."""
-    def __init__(self, name, subdirs=None, root=None):
+    def __init__(self, name, children=None, root=None):
         """Instantiate a Directory object.
 
         Args:
             name: Name of the directory.
-            subdirs: A list of sub directories.
+            children: A list of File or Directory objects.
             root: The parent directory of self.
         """
         self.name = name
-        self.subdirs = subdirs
+        self.children = children
         self.root = root
 
 
