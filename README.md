@@ -42,3 +42,7 @@ creating file...requirements.txt
 creating directory...service
 demo-project successfully rolled. Your template is dank!
 ```
+
+## Future improvements:
+- System installation feature.
+- Github integration and configuration for creating projects.
