@@ -1,14 +1,14 @@
 # Dope CLI
 A CLI for hand rolling software projects using dank templates.
 
-## How to install:
+### How to install:
 ```
 git clone git@github.com:jarryd-gerber/dope
 cd dope
 docker build . --no-cache
 ```
 
-## Example usages:
+### Example usages:
 
 **command:**
 ```
