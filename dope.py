@@ -6,6 +6,7 @@ import importlib
 import click
 from templates import File
 from templates import Directory
+from exceptions import DopeProjectExists
 
 
 @click.command()
@@ -22,7 +23,7 @@ from templates import Directory
     help='The structure of your projects files and directories.'
 )
 def roll(name, template):
-    """Create the actual structure of the project dirs and files.
+    """Roll the project from a template.
 
     Args:
         name: Project name.
@@ -30,34 +31,32 @@ def roll(name, template):
     """
     click.echo(f'Dope is hand rolling {name} with the {template} template...')
 
-    try:
-        base_path = os.path.dirname(os.path.abspath(__file__))
-        project_path = os.path.join(base_path, name)
-        template_module = importlib.import_module(f'templates.{template}')
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    project_path = os.path.join(base_path, name)
+    template_module = importlib.import_module(f'templates.{template}')
 
-        if not os.path.exists(project_path):
-            os.mkdir(project_path)
+    if os.path.exists(project_path):
+        raise DopeProjectExists(f'{name} already rolled!')
 
-        for node in template_module.template:
-            if isinstance(node, Directory):
-                click.echo(f'creating directory...{node.name}')
+    os.mkdir(project_path)
 
-                dir_path = os.path.join(project_path, node.name)
-                os.mkdir(dir_path)
-            elif isinstance(node, File):
+    for node in template_module.template:
+        if isinstance(node, Directory):
+            click.echo(f'creating directory...{node.name}')
+            dir_path = os.path.join(project_path, node.name)
+            os.mkdir(dir_path)
+
+        elif isinstance(node, File):
+            if node.extension:
                 click.echo(f'creating file...{node.name}.{node.extension}')
+                file_path = os.path.join(project_path, f'{node.name}.{node.extension}')
+            else:
+                click.echo(f'creating file...{node.name}')
+                file_path = os.path.join(project_path, f'{node.name}')
 
-                if node.extension:
-                    file_path = os.path.join(project_path, f'{node.name}.{node.extension}')
-                else:
-                    file_path = os.path.join(project_path, f'{node.name}')
+            open(file_path, 'w').close()
 
-                open(file_path, 'w').close()
-
-        click.echo(f'{name} successfully rolled. Your template is dank!')
-    except Exception as exc:
-        click.echo('Something went wrong! Your template got stank!')
-        raise exc
+    click.echo(f'{name} successfully rolled. Your template is dank!')
 
 
 if __name__ == '__main__':
