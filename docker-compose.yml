@@ -1,8 +1,13 @@
 version: '3'
 services:
   dope:
-    build: .
+    image: dope
+    container_name: dope
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - ./:/app
-    entrypoint:
+    command:
       python dope.py
+
